@@ -1,0 +1,282 @@
+#include "gd32f1x0.h"
+
+
+#define GPIO_PIN_QGB GPIO_PIN_9
+
+#define led_on()        gpio_bit_set(GPIOB, GPIO_PIN_QGB)
+#define led_off()       gpio_bit_reset(GPIOB, GPIO_PIN_QGB)
+#define led_toggle()    gpio_bit_write(GPIOB, GPIO_PIN_QGB, !gpio_output_bit_get(GPIOB, GPIO_PIN_QGB))
+#define led_config()    rcu_periph_clock_enable(RCU_GPIOB);\
+                        gpio_mode_set(GPIOB, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO_PIN_QGB);\
+                        gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_QGB);\
+                        led_off()
+
+#define uart1_gpi(port,pin)  usart_data_transmit(USART1,0x30+gpio_input_bit_get(port, pin));\
+				while (usart_flag_get(USART1, USART_FLAG_TBE) == RESET) {}
+
+#define uart1_gpo(port,pin)  usart_data_transmit(USART1,0x30+gpio_output_bit_get(port, pin));\
+				while (usart_flag_get(USART1, USART_FLAG_TBE) == RESET) {}
+					
+void RCU_config(void)
+{
+        rcu_periph_clock_enable(RCU_GPIOA);  //??GPIOA??
+        rcu_usart_clock_config(CK_APB2);         
+        rcu_periph_clock_enable(RCU_USART0) ;    
+        rcu_periph_clock_enable(RCU_USART1) ;    //??USART1????
+}
+
+void NVIC_config(void)
+{
+        nvic_priority_group_set(NVIC_PRIGROUP_PRE4_SUB0);
+        //????USART1???
+}
+#define USART_STEER_COM USART0
+#define USART_STEER_AF	GPIO_AF_0				// robo
+#define USART_STEER_COM_TX_PIN GPIO_PIN_6	//SAME AS 2.0 but left open at missing bluetooth chip 
+#define USART_STEER_COM_TX_PORT GPIOB		//SAME AS 2.0 but left open at missing bluetooth chip 
+#define USART_STEER_COM_RX_PIN GPIO_PIN_7	//SAME AS 2.0 but left open at missing bluetooth chip 
+#define USART_STEER_COM_RX_PORT GPIOB		//SAME AS 2.0 but left open at missing bluetooth chip 
+
+#define USART1_RX_PIN GPIO_PIN_4	//SAME AS 2.0 but left open at missing bluetooth chip 
+#define USART1_TX_PIN GPIO_PIN_5	//SAME AS 2.0 but left open at missing bluetooth chip 
+
+
+void GPIO_config(void)
+{
+        gpio_af_set(GPIOA, GPIO_AF_1, GPIO_PIN_2);
+        gpio_mode_set(GPIOA, GPIO_MODE_AF, GPIO_PUPD_PULLUP, GPIO_PIN_2 );
+        gpio_output_options_set(GPIOA,GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_2);
+       
+        gpio_af_set(GPIOA, GPIO_AF_1, GPIO_PIN_3);
+        gpio_mode_set(GPIOA, GPIO_MODE_AF, GPIO_PUPD_PULLUP, GPIO_PIN_3 );  
+				gpio_output_options_set(GPIOA,GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_3);
+
+		gpio_mode_set(USART_STEER_COM_TX_PORT , GPIO_MODE_AF, GPIO_PUPD_PULLUP, USART_STEER_COM_TX_PIN);	
+	gpio_mode_set(USART_STEER_COM_RX_PORT , GPIO_MODE_AF, GPIO_PUPD_PULLUP, USART_STEER_COM_RX_PIN);
+	gpio_output_options_set(USART_STEER_COM_TX_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, USART_STEER_COM_TX_PIN);
+	gpio_output_options_set(USART_STEER_COM_RX_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, USART_STEER_COM_RX_PIN);	
+	gpio_af_set(USART_STEER_COM_TX_PORT, USART_STEER_AF, USART_STEER_COM_TX_PIN);
+	gpio_af_set(USART_STEER_COM_RX_PORT, USART_STEER_AF, USART_STEER_COM_RX_PIN);			
+}
+
+void USART_config(uint32_t usart_periph,uint32_t baudval)
+{
+        usart_deinit(usart_periph);    //复位USART0
+       
+        usart_baudrate_set(usart_periph,baudval);   //设置波特率
+        usart_enable(usart_periph);                                 //使能USART(UEN=1)
+        usart_transmit_config(usart_periph,USART_TRANSMIT_ENABLE);  //使能发送器(TEN=1)
+        usart_receive_config(usart_periph,USART_RECEIVE_ENABLE);    //使能接收器(REN=1)
+
+}
+
+dma_parameter_struct dma_init_struct_adc;
+typedef struct
+{
+  uint16_t v_batt;
+	uint16_t current_dc;
+} adc_buf_t;
+adc_buf_t adc_buffer;
+#define VBATT_PIN	GPIO_PIN_4
+#define VBATT_PORT GPIOA
+#define VBATT_CHANNEL ADC_CHANNEL_4
+#define CURRENT_DC_PIN	GPIO_PIN_6
+#define CURRENT_DC_PORT GPIOA
+#define CURRENT_DC_CHANNEL ADC_CHANNEL_6
+
+
+#define HALL_A_PIN GPIO_PIN_1 //绿
+#define HALL_A_PORT GPIOA
+#define HALL_B_PIN GPIO_PIN_11 //黄
+#define HALL_B_PORT GPIOB
+#define HALL_C_PIN GPIO_PIN_14 //蓝
+#define HALL_C_PORT GPIOC
+
+// 2-0
+// #define HALL_A_PIN GPIO_PIN_11 //黄
+// #define HALL_A_PORT GPIOB
+// #define HALL_B_PIN GPIO_PIN_1  //绿
+// #define HALL_B_PORT GPIOA
+// #define HALL_C_PIN GPIO_PIN_14 //蓝
+// #define HALL_C_PORT GPIOC
+
+// 2-1
+// #define HALL_A_PIN GPIO_PIN_0
+// #define HALL_A_PORT GPIOA
+// #define HALL_C_PIN GPIO_PIN_11
+// #define HALL_C_PORT GPIOB
+// #define HALL_B_PIN GPIO_PIN_1
+// #define HALL_B_PORT GPIOA
+
+// #define HALL_A_PIN GPIO_PIN_0	// Batman313v
+// #define HALL_A_PORT GPIOB		// Batman313v
+// #define HALL_B_PIN GPIO_PIN_5	// Batman313v
+// #define HALL_B_PORT GPIOB		// Batman313v
+// #define HALL_C_PIN GPIO_PIN_4	// Batman313v
+// #define HALL_C_PORT GPIOB		// Batman313v
+
+void ADC_init(void)
+{
+	#ifdef VBATT_PIN
+		gpio_mode_set(VBATT_PORT, GPIO_MODE_ANALOG, GPIO_PUPD_NONE, VBATT_PIN);
+	#endif
+	#ifdef CURRENT_DC_PIN
+		gpio_mode_set(CURRENT_DC_PORT, GPIO_MODE_ANALOG, GPIO_PUPD_NONE, CURRENT_DC_PIN);
+	#endif
+	// gpio_mode_set(GPIOA, GPIO_MODE_ANALOG, GPIO_PUPD_NONE, GPIO_PIN_6);
+	// gpio_mode_set(GPIOB, GPIO_MODE_ANALOG, GPIO_PUPD_NONE, GPIO_PIN_0);	
+	
+	// Enable ADC and DMA clock
+	rcu_periph_clock_enable(RCU_ADC);
+	rcu_periph_clock_enable(RCU_DMA);
+	
+  // Configure ADC clock (APB2 clock is DIV1 -> 72MHz, ADC clock is DIV6 -> 12MHz)
+	rcu_adc_clock_config(RCU_ADCCK_APB2_DIV6);
+	
+	// Interrupt channel 0 enable
+	nvic_irq_enable(DMA_Channel0_IRQn, 1, 0);
+	
+	// Initialize DMA channel 0 for ADC
+	dma_deinit(DMA_CH0);
+	dma_init_struct_adc.direction = DMA_PERIPHERAL_TO_MEMORY;
+	dma_init_struct_adc.memory_addr = (uint32_t)&adc_buffer;
+	dma_init_struct_adc.memory_inc = DMA_MEMORY_INCREASE_ENABLE;
+	dma_init_struct_adc.memory_width = DMA_MEMORY_WIDTH_16BIT;
+	dma_init_struct_adc.number = 2;
+	dma_init_struct_adc.periph_addr = (uint32_t)&ADC_RDATA;
+	dma_init_struct_adc.periph_inc = DMA_PERIPH_INCREASE_DISABLE;
+	dma_init_struct_adc.periph_width = DMA_PERIPHERAL_WIDTH_16BIT;
+	dma_init_struct_adc.priority = DMA_PRIORITY_ULTRA_HIGH;
+	dma_init(DMA_CH0, &dma_init_struct_adc);
+	
+	// Configure DMA mode
+	dma_circulation_enable(DMA_CH0);
+	dma_memory_to_memory_disable(DMA_CH0);
+	
+	// Enable DMA transfer complete interrupt
+	dma_interrupt_enable(DMA_CH0, DMA_CHXCTL_FTFIE);
+	
+	// At least clear number of remaining data to be transferred by the DMA 
+	dma_transfer_number_config(DMA_CH0, 2);
+	
+	// Enable DMA channel 0
+	dma_channel_enable(DMA_CH0);
+	
+	adc_channel_length_config(ADC_REGULAR_CHANNEL, 2);
+	adc_regular_channel_config(0, VBATT_CHANNEL, ADC_SAMPLETIME_13POINT5);
+	adc_regular_channel_config(1, CURRENT_DC_CHANNEL, ADC_SAMPLETIME_13POINT5);
+	adc_data_alignment_config(ADC_DATAALIGN_RIGHT);
+	
+	// Set trigger of ADC
+	adc_external_trigger_config(ADC_REGULAR_CHANNEL, ENABLE);
+	adc_external_trigger_source_config(ADC_REGULAR_CHANNEL, ADC_EXTTRIG_REGULAR_NONE);
+	
+	// Disable the temperature sensor, Vrefint and vbat channel
+	adc_tempsensor_vrefint_disable();
+	adc_vbat_disable();
+	
+	// ADC analog watchdog disable
+	adc_watchdog_disable();
+	
+	// Enable ADC (must be before calibration)
+	adc_enable();
+	
+	// Calibrate ADC values
+	adc_calibration_enable();
+	
+	// Enable DMA request
+	adc_dma_mode_enable();
+    
+	// Set ADC to scan mode
+	adc_special_function_config(ADC_SCAN_MODE, ENABLE);
+	
+	    //清除ADC通道转换完成标志
+    adc_flag_clear(ADC_FLAG_EOC);  
+    
+    //使能ADC软件触发
+    adc_software_trigger_enable(ADC_REGULAR_CHANNEL);  
+    
+    //DMA通道使能 
+    dma_channel_enable(DMA_CH0);
+}
+
+
+
+static void delay(uint16_t n )//no asm not work
+{
+	uint16_t i,j;
+	for(i=0;i<n;i++)
+		for(j=0;j<8500;j++){
+			__ASM("nop"); 
+		}
+}
+    
+	
+	
+#define U USART1
+int main(void) {
+	led_config();
+	RCU_config();    //?????
+	NVIC_config();   //?????
+	GPIO_config();   //GPIO???
+	USART_config(U,57600); //USART1???
+	ADC_init();		
+	
+	gpio_mode_set(HALL_A_PORT , GPIO_MODE_INPUT, GPIO_PUPD_NONE, HALL_A_PIN);
+	gpio_mode_set(HALL_B_PORT , GPIO_MODE_INPUT, GPIO_PUPD_NONE, HALL_B_PIN);
+	rcu_periph_clock_enable(RCU_GPIOC);
+	gpio_mode_set(HALL_C_PORT , GPIO_MODE_INPUT, GPIO_PUPD_NONE, HALL_C_PIN);	
+	
+	gpio_mode_set(GPIOC, GPIO_MODE_INPUT, GPIO_PUPD_NONE, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
+    // gpio_pupd_disable(GPIOC, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
+
+	// gpio_mode_set(GPIOC, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO_PIN_13);	
+	// gpio_bit_write(GPIOC, GPIO_PIN_13, 1);
+	
+	while(1){
+//		usart_data_transmit(U, 0x35);
+//		while (usart_flag_get(U, USART_FLAG_TBE) == RESET) {}
+		
+		
+		while (usart_flag_get(U, USART_FLAG_RBNE)== 1) {
+			uint16_t n=0;
+			n=(uint16_t)usart_data_receive(U);
+			usart_data_transmit(U,n+0x20);
+			while (usart_flag_get(U, USART_FLAG_TBE) == RESET) {}
+				
+			  if(n==0x0d){
+				usart_data_transmit(USART1,0x0d);// \r
+				while (usart_flag_get(USART1, USART_FLAG_TBE) == RESET) {}
+				usart_data_transmit(USART1,0x0a);// \n
+				while (usart_flag_get(USART1, USART_FLAG_TBE) == RESET) {}
+
+				  
+				usart_data_transmit(USART1,0x30+adc_buffer.current_dc);
+				while (usart_flag_get(USART1, USART_FLAG_TBE) == RESET) {}				  
+				usart_data_transmit(USART1,0x30+adc_buffer.v_batt);
+				while (usart_flag_get(USART1, USART_FLAG_TBE) == RESET) {}
+
+				// uart1_gpi(GPIOB, GPIO_PIN_11);
+				uart1_gpi(HALL_A_PORT, HALL_A_PIN);
+				uart1_gpi(HALL_B_PORT, HALL_B_PIN);
+				uart1_gpi(HALL_C_PORT, HALL_C_PIN);
+				uart1_gpi(GPIOC, GPIO_PIN_13);
+				// uart1_gpo(GPIOC, GPIO_PIN_13);
+				uart1_gpi(GPIOC, GPIO_PIN_15);
+				// usart_data_transmit(USART1,0x0d);// \r
+				// usart_data_transmit(USART1,0x0a);// \n
+				// usart_data_transmit(USART1,0x0a);// \n
+			}
+						
+//			led_on();
+//			delay(2);	
+		}
+		
+		
+//		led_off();
+//		delay(144);
+		
+	}
+	
+}
+

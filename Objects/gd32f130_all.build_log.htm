@@ -1,0 +1,300 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ¦ÌVision V5.38.0.0
+Copyright (C) 2022 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: cs qgb, 0, LIC=585FJ-UEXE0-SBNEJ-UHB7T-WIZFD-2N5KY
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.38.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCLANG\Bin
+C Compiler:      ArmClang.exe V6.19
+Assembler:       Armasm.exe V6.19
+Linker/Locator:  ArmLink.exe V6.19
+Library Manager: ArmAr.exe V6.19
+Hex Converter:   FromElf.exe V6.19
+CPU DLL:         SARMCM3.DLL V5.38.0.0
+Dialog DLL:      DCM.DLL V1.17.5.0
+Target DLL:      CMSIS_AGDI.dll V1.33.15.0
+Dialog DLL:      TCM.DLL V1.56.4.0
+ 
+<h2>Project:</h2>
+C:\test\gd32\gd32f130_adc\gd32f130_all.uvprojx
+Project File Date:  04/15/2023
+
+<h2>Output:</h2>
+*** Using Compiler 'V6.19', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+Build target 'Target 1'
+main.c(1): warning: In file included from...
+C:/Users/qgb/AppData/Local/Arm/Packs/GigaDevice/GD32F1x0_DFP/3.2.1/Device/Include\gd32f1x0.h(187): warning: 'bool' is a keyword in C2x [-Wc2x-compat]
+typedef enum {FALSE = 0, TRUE = !FALSE} bool;
+                                        ^
+main.c(5): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
+    usart_data_transmit(USART1,ch);
+    ~~~~~~~~~~~~~~~~~~~        ^~
+main.c(4): warning: unused parameter 'stream' [-Wunused-parameter]
+int fputc(int ch, FILE* stream){
+                        ^
+main.c(10): warning: explicitly assigning value of variable of type 'int' to itself [-Wself-assign]
+        x = x;
+        ~ ^ ~
+main.c(9): warning: no previous prototype for function '_sys_exit' [-Wmissing-prototypes]
+void _sys_exit(int x){
+     ^
+main.c(9): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void _sys_exit(int x){
+^
+static 
+main.c(20): warning: no previous prototype for function 'USART_config' [-Wmissing-prototypes]
+void USART_config(uint32_t usart_periph,uint32_t baudval)
+     ^
+main.c(20): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void USART_config(uint32_t usart_periph,uint32_t baudval)
+^
+static 
+main.c(50): warning: no previous prototype for function 'rcu_config' [-Wmissing-prototypes]
+void rcu_config(void)
+     ^
+main.c(50): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void rcu_config(void)
+^
+static 
+main.c(64): warning: no previous prototype for function 'adc_config' [-Wmissing-prototypes]
+void adc_config(void)
+     ^
+main.c(64): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void adc_config(void)
+^
+static 
+main.c(132): warning: no previous prototype for function 'dma_config' [-Wmissing-prototypes]
+void dma_config(void)
+     ^
+main.c(132): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void dma_config(void)
+^
+static 
+main.c(200): warning: implicit conversion loses integer precision: 'uint32_t' (aka 'unsigned int') to 'uint16_t' (aka 'unsigned short') [-Wimplicit-int-conversion]
+                                adc_ave[i] = adc_sum[i] >> 3;
+                                           ~ ~~~~~~~~~~~^~~~
+main.c(196): warning: array index 2 is past the end of the array (which contains 2 elements) [-Warray-bounds]
+                                adc_sum[i] = adc_date_buffer[0][i] + adc_date_buffer[1][i] + adc_date_buffer[2][i] + adc_date_buffer[3][i] 
+                                                                                             ^               ~
+main.c(157): note: array 'adc_date_buffer' declared here
+        static uint16_t adc_date_buffer[AVE_NUM][ADC_Num] = {0};
+        ^
+main.c(196): warning: array index 3 is past the end of the array (which contains 2 elements) [-Warray-bounds]
+                                adc_sum[i] = adc_date_buffer[0][i] + adc_date_buffer[1][i] + adc_date_buffer[2][i] + adc_date_buffer[3][i] 
+                                                                                                                     ^               ~
+main.c(157): note: array 'adc_date_buffer' declared here
+        static uint16_t adc_date_buffer[AVE_NUM][ADC_Num] = {0};
+        ^
+main.c(197): warning: array index 4 is past the end of the array (which contains 2 elements) [-Warray-bounds]
+                                                        + adc_date_buffer[4][i] + adc_date_buffer[5][i] + adc_date_buffer[6][i] + adc_date_buffer[7][i];
+                                                          ^               ~
+main.c(157): note: array 'adc_date_buffer' declared here
+        static uint16_t adc_date_buffer[AVE_NUM][ADC_Num] = {0};
+        ^
+main.c(197): warning: array index 5 is past the end of the array (which contains 2 elements) [-Warray-bounds]
+                                                        + adc_date_buffer[4][i] + adc_date_buffer[5][i] + adc_date_buffer[6][i] + adc_date_buffer[7][i];
+                                                                                  ^               ~
+main.c(157): note: array 'adc_date_buffer' declared here
+        static uint16_t adc_date_buffer[AVE_NUM][ADC_Num] = {0};
+        ^
+main.c(197): warning: array index 6 is past the end of the array (which contains 2 elements) [-Warray-bounds]
+                                                        + adc_date_buffer[4][i] + adc_date_buffer[5][i] + adc_date_buffer[6][i] + adc_date_buffer[7][i];
+                                                                                                          ^               ~
+main.c(157): note: array 'adc_date_buffer' declared here
+        static uint16_t adc_date_buffer[AVE_NUM][ADC_Num] = {0};
+        ^
+main.c(197): warning: array index 7 is past the end of the array (which contains 2 elements) [-Warray-bounds]
+                                                        + adc_date_buffer[4][i] + adc_date_buffer[5][i] + adc_date_buffer[6][i] + adc_date_buffer[7][i];
+                                                                                                                                  ^               ~
+main.c(157): note: array 'adc_date_buffer' declared here
+        static uint16_t adc_date_buffer[AVE_NUM][ADC_Num] = {0};
+        ^
+main.c(48): warning: no previous extern declaration for non-static variable 'adc_value' [-Wmissing-variable-declarations]
+uint16_t adc_value[ADC_Num];
+         ^
+main.c(48): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+uint16_t adc_value[ADC_Num];
+^
+17 warnings generated.
+compiling main.c...
+linking...
+Program Size: Code=4714 RO-data=450 RW-data=0 ZI-data=2248  
+".\Objects\gd32f130_all.axf" - 0 Error(s), 17 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.9.0.pack
+                ARM.CMSIS.5.9.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.6.0
+
+Package Vendor: GigaDevice
+                https://gd32mcu.com/data/documents/pack/GigaDevice.GD32F1x0_DFP.3.2.1.pack
+                GigaDevice.GD32F1x0_DFP.3.2.1
+                GigaDevice GD32F1x0 Series Device Support and Examples
+   * Component: GD32F1x0_EVAL Version: 3.2.0
+   * Component: ADC Version: 3.2.0
+   * Component: CAN Version: 3.2.0
+   * Component: CEC Version: 3.2.0
+   * Component: CMP Version: 3.2.0
+   * Component: CRC Version: 3.2.0
+   * Component: DAC Version: 3.2.0
+   * Component: DMA Version: 3.2.0
+   * Component: EXTI Version: 3.2.0
+   * Component: FMC Version: 3.2.0
+   * Component: FWDGT Version: 3.2.0
+   * Component: GPIO Version: 3.2.0
+   * Component: I2C Version: 3.2.0
+   * Component: IVREF Version: 3.2.0
+   * Component: MCUDBG Version: 3.2.0
+   * Component: MISC Version: 3.2.0
+   * Component: OPA Version: 3.2.0
+   * Component: PMU Version: 3.2.0
+   * Component: RCU Version: 3.2.0
+   * Component: RTC Version: 3.2.0
+   * Component: SLCD Version: 3.2.0
+   * Component: SPI_I2S Version: 3.2.0
+   * Component: SYSCFG Version: 3.2.0
+   * Component: TIMER Version: 3.2.0
+   * Component: TSI Version: 3.2.0
+   * Component: USART Version: 3.2.0
+   * Component: WWDGT Version: 3.2.0
+   * Component: GD32F1x0_libopt Version: 3.2.0
+   * Component: Startup Version: 3.2.0
+
+<h2>Collection of Component include folders:</h2>
+  ./RTE/_Target_1
+  C:/Users/qgb/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include
+  C:/Users/qgb/AppData/Local/Arm/Packs/GigaDevice/GD32F1x0_DFP/3.2.1/Device/Firmware/Peripherals/inc
+  C:/Users/qgb/AppData/Local/Arm/Packs/GigaDevice/GD32F1x0_DFP/3.2.1/Device/Include
+  C:/Users/qgb/AppData/Local/Arm/Packs/GigaDevice/GD32F1x0_DFP/3.2.1/Device/Utilities
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.6.0
+
+   * Component: GigaDevice::Device:GD32F1x0_EVAL:3.2.0
+      Source file:   Device/Utilities/gd32f1x0r_eval.c
+      Include file:  Device/Utilities/gd32f1x0r_eval.h
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:ADC:3.2.0
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_adc.c
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_adc.h
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:CAN:3.2.0
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_can.c
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_can.h
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:CEC:3.2.0
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_cec.c
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_cec.h
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:CMP:3.2.0
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_cmp.h
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_cmp.c
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:CRC:3.2.0
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_crc.c
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_crc.h
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:DAC:3.2.0
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_dac.h
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_dac.c
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:DMA:3.2.0
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_dma.h
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_dma.c
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:EXTI:3.2.0
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_exti.h
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_exti.c
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:FMC:3.2.0
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_fmc.h
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_fmc.c
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:FWDGT:3.2.0
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_fwdgt.h
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_fwdgt.c
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:GPIO:3.2.0
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_gpio.c
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_gpio.h
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:I2C:3.2.0
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_i2c.c
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_i2c.h
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:IVREF:3.2.0
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_ivref.h
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_ivref.c
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:MCUDBG:3.2.0
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_dbg.c
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_dbg.h
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:MISC:3.2.0
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_misc.c
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_misc.h
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:OPA:3.2.0
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_opa.c
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_opa.h
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:PMU:3.2.0
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_pmu.c
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_pmu.h
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:RCU:3.2.0
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_rcu.c
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_rcu.h
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:RTC:3.2.0
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_rtc.h
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_rtc.c
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:SLCD:3.2.0
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_slcd.h
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_slcd.c
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:SPI_I2S:3.2.0
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_spi.h
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_spi.c
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:SYSCFG:3.2.0
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_syscfg.h
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_syscfg.c
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:TIMER:3.2.0
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_timer.h
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_timer.c
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:TSI:3.2.0
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_tsi.h
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_tsi.c
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:USART:3.2.0
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_usart.h
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_usart.c
+
+   * Component: GigaDevice::Device:GD32F1x0_StdPeripherals:WWDGT:3.2.0
+      Source file:   Device/Firmware/Peripherals/src/gd32f1x0_wwdgt.c
+      Include file:  Device/Firmware/Peripherals/inc/gd32f1x0_wwdgt.h
+
+   * Component: GigaDevice::Device:GD32F1x0_libopt:3.2.0
+      Include file:  Device/Include/gd32f1x0_libopt.h
+
+   * Component: GigaDevice::Device:Startup:3.2.0
+      Source file:   Device/Source/startup_gd32f1x0.s
+      Include file:  Device/Include/gd32f1x0.h
+      Source file:   Device/Source/system_gd32f1x0.c
+Build Time Elapsed:  00:00:02
+</pre>
+</body>
+</html>
