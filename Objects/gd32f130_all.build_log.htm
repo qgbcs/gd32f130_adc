@@ -68,50 +68,50 @@ main.c(64): note: declare 'static' if the function is not intended to be used ou
 void adc_config(void)
 ^
 static 
-main.c(132): warning: no previous prototype for function 'dma_config' [-Wmissing-prototypes]
+main.c(114): warning: no previous prototype for function 'dma_config' [-Wmissing-prototypes]
 void dma_config(void)
      ^
-main.c(132): note: declare 'static' if the function is not intended to be used outside of this translation unit
+main.c(114): note: declare 'static' if the function is not intended to be used outside of this translation unit
 void dma_config(void)
 ^
 static 
-main.c(200): warning: implicit conversion loses integer precision: 'uint32_t' (aka 'unsigned int') to 'uint16_t' (aka 'unsigned short') [-Wimplicit-int-conversion]
+main.c(182): warning: implicit conversion loses integer precision: 'uint32_t' (aka 'unsigned int') to 'uint16_t' (aka 'unsigned short') [-Wimplicit-int-conversion]
                                 adc_ave[i] = adc_sum[i] >> 3;
                                            ~ ~~~~~~~~~~~^~~~
-main.c(196): warning: array index 2 is past the end of the array (which contains 2 elements) [-Warray-bounds]
+main.c(178): warning: array index 2 is past the end of the array (which contains 2 elements) [-Warray-bounds]
                                 adc_sum[i] = adc_date_buffer[0][i] + adc_date_buffer[1][i] + adc_date_buffer[2][i] + adc_date_buffer[3][i] 
                                                                                              ^               ~
-main.c(157): note: array 'adc_date_buffer' declared here
+main.c(139): note: array 'adc_date_buffer' declared here
         static uint16_t adc_date_buffer[AVE_NUM][ADC_Num] = {0};
         ^
-main.c(196): warning: array index 3 is past the end of the array (which contains 2 elements) [-Warray-bounds]
+main.c(178): warning: array index 3 is past the end of the array (which contains 2 elements) [-Warray-bounds]
                                 adc_sum[i] = adc_date_buffer[0][i] + adc_date_buffer[1][i] + adc_date_buffer[2][i] + adc_date_buffer[3][i] 
                                                                                                                      ^               ~
-main.c(157): note: array 'adc_date_buffer' declared here
+main.c(139): note: array 'adc_date_buffer' declared here
         static uint16_t adc_date_buffer[AVE_NUM][ADC_Num] = {0};
         ^
-main.c(197): warning: array index 4 is past the end of the array (which contains 2 elements) [-Warray-bounds]
+main.c(179): warning: array index 4 is past the end of the array (which contains 2 elements) [-Warray-bounds]
                                                         + adc_date_buffer[4][i] + adc_date_buffer[5][i] + adc_date_buffer[6][i] + adc_date_buffer[7][i];
                                                           ^               ~
-main.c(157): note: array 'adc_date_buffer' declared here
+main.c(139): note: array 'adc_date_buffer' declared here
         static uint16_t adc_date_buffer[AVE_NUM][ADC_Num] = {0};
         ^
-main.c(197): warning: array index 5 is past the end of the array (which contains 2 elements) [-Warray-bounds]
+main.c(179): warning: array index 5 is past the end of the array (which contains 2 elements) [-Warray-bounds]
                                                         + adc_date_buffer[4][i] + adc_date_buffer[5][i] + adc_date_buffer[6][i] + adc_date_buffer[7][i];
                                                                                   ^               ~
-main.c(157): note: array 'adc_date_buffer' declared here
+main.c(139): note: array 'adc_date_buffer' declared here
         static uint16_t adc_date_buffer[AVE_NUM][ADC_Num] = {0};
         ^
-main.c(197): warning: array index 6 is past the end of the array (which contains 2 elements) [-Warray-bounds]
+main.c(179): warning: array index 6 is past the end of the array (which contains 2 elements) [-Warray-bounds]
                                                         + adc_date_buffer[4][i] + adc_date_buffer[5][i] + adc_date_buffer[6][i] + adc_date_buffer[7][i];
                                                                                                           ^               ~
-main.c(157): note: array 'adc_date_buffer' declared here
+main.c(139): note: array 'adc_date_buffer' declared here
         static uint16_t adc_date_buffer[AVE_NUM][ADC_Num] = {0};
         ^
-main.c(197): warning: array index 7 is past the end of the array (which contains 2 elements) [-Warray-bounds]
+main.c(179): warning: array index 7 is past the end of the array (which contains 2 elements) [-Warray-bounds]
                                                         + adc_date_buffer[4][i] + adc_date_buffer[5][i] + adc_date_buffer[6][i] + adc_date_buffer[7][i];
                                                                                                                                   ^               ~
-main.c(157): note: array 'adc_date_buffer' declared here
+main.c(139): note: array 'adc_date_buffer' declared here
         static uint16_t adc_date_buffer[AVE_NUM][ADC_Num] = {0};
         ^
 main.c(48): warning: no previous extern declaration for non-static variable 'adc_value' [-Wmissing-variable-declarations]
@@ -123,7 +123,7 @@ uint16_t adc_value[ADC_Num];
 17 warnings generated.
 compiling main.c...
 linking...
-Program Size: Code=4714 RO-data=450 RW-data=0 ZI-data=2248  
+Program Size: Code=4726 RO-data=450 RW-data=0 ZI-data=2248  
 ".\Objects\gd32f130_all.axf" - 0 Error(s), 17 Warning(s).
 
 <h2>Software Packages used:</h2>
@@ -294,7 +294,7 @@ Package Vendor: GigaDevice
       Source file:   Device/Source/startup_gd32f1x0.s
       Include file:  Device/Include/gd32f1x0.h
       Source file:   Device/Source/system_gd32f1x0.c
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

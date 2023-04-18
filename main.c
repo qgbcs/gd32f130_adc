@@ -77,56 +77,38 @@ void adc_config(void)
 	// | GPIO_PIN_9
 	// | GPIO_PIN_10
 	);
+    
 	
-	// gpio_mode_set(GPIOB, GPIO_MODE_ANALOG, GPIO_PUPD_NONE, 
-	// GPIO_PIN_1 |
-	// GPIO_PIN_11
-	// );
-	
-	/* ADC channel length config */
-    adc_channel_length_config(ADC_REGULAR_CHANNEL,ADC_Num);
-	
-    /* ADC regular channel config */
-	// for (uint8_t i=0; i<ADC_Num; i++){
-	  // adc_regular_channel_config(i,(uint8_t)i,ADC_SAMPLETIME_13POINT5);
-		
-	// }
-	// adc_regular_channel_config(0,ADC_CHANNEL_0,ADC_SAMPLETIME_13POINT5);
-	// adc_regular_channel_config(1,ADC_CHANNEL_1,ADC_SAMPLETIME_13POINT5);
-	// adc_regular_channel_config(2,ADC_CHANNEL_2,ADC_SAMPLETIME_13POINT5);
-	// adc_regular_channel_config(3,ADC_CHANNEL_3,ADC_SAMPLETIME_13POINT5);
-	adc_regular_channel_config(4,ADC_CHANNEL_4,ADC_SAMPLETIME_13POINT5);
-	adc_regular_channel_config(5,ADC_CHANNEL_5,ADC_SAMPLETIME_13POINT5);
-	adc_regular_channel_config(6,ADC_CHANNEL_6,ADC_SAMPLETIME_13POINT5);
-	adc_regular_channel_config(7,ADC_CHANNEL_7,ADC_SAMPLETIME_13POINT5);
-	// adc_regular_channel_config(8,ADC_CHANNEL_9,ADC_SAMPLETIME_13POINT5);
-	
-    /* ADC external trigger enable */
-    adc_external_trigger_config(ADC_REGULAR_CHANNEL,ENABLE);
-	
-    /* ADC external trigger source config */
-    // adc_external_trigger_source_config(ADC_REGULAR_CHANNEL,ADC_EXTTRIG_REGULAR_SWRCST);
-	
+	// adc_regular_channel_config(4,ADC_CHANNEL_4,ADC_SAMPLETIME_13POINT5);
+	// adc_regular_channel_config(5,ADC_CHANNEL_5,ADC_SAMPLETIME_13POINT5);
+	// adc_regular_channel_config(6,ADC_CHANNEL_6,ADC_SAMPLETIME_13POINT5);
+	// adc_regular_channel_config(7,ADC_CHANNEL_7,ADC_SAMPLETIME_13POINT5);
+	adc_deinit();
+	adc_channel_length_config(ADC_REGULAR_CHANNEL,ADC_Num);
+    /* ADC channel length config */
+    // adc_channel_length_config(ADC_REGULAR_CHANNEL,ADC_CH_NUM);
     /* ADC data alignment config */
-    adc_data_alignment_config(ADC_DATAALIGN_RIGHT);
-	
-	/* ADC discontinuous mode */
-    adc_discontinuous_mode_config(ADC_REGULAR_CHANNEL,4);
-	
+    adc_data_alignment_config(ADC_DATAALIGN_RIGHT);  
+    /* ADC SCAN function enable */
+    adc_special_function_config(ADC_CONTINUOUS_MODE,ENABLE);
+    adc_special_function_config(ADC_SCAN_MODE,ENABLE);
+    /* ADC regular channel config */
+    adc_regular_channel_config(0, ADC_CHANNEL_4, ADC_SAMPLETIME_55POINT5);
+    adc_regular_channel_config(1, ADC_CHANNEL_5, ADC_SAMPLETIME_55POINT5);
+    adc_regular_channel_config(2, ADC_CHANNEL_6, ADC_SAMPLETIME_55POINT5);
+    adc_regular_channel_config(3, ADC_CHANNEL_7, ADC_SAMPLETIME_55POINT5);
+    
+    /* ADC external trigger source config */
+    adc_external_trigger_source_config(ADC_REGULAR_CHANNEL,ADC_EXTTRIG_REGULAR_NONE);
+    adc_external_trigger_config(ADC_REGULAR_CHANNEL,ENABLE);
+    
     /* enable ADC interface */
     adc_enable();
-	
     /* ADC calibration and reset calibration */
     adc_calibration_enable();
-	
-    /* ADC DMA function enable */
+    /* ADC DMA enable */
     adc_dma_mode_enable();
-    /* ADC contineous function enable */
-   adc_special_function_config(ADC_CONTINUOUS_MODE,ENABLE);
-    /* ADC software trigger enable */
-//    adc_software_trigger_enable(ADC_REGULAR_CHANNEL);
-	
-	
+    adc_software_trigger_enable(ADC_REGULAR_CHANNEL);
 }
 
 void dma_config(void)
